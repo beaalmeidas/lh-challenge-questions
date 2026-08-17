@@ -25,6 +25,12 @@ BOOLEAN_VALUES = {
 INT_RE = re.compile(r"^[+-]?\d+$")
 FLOAT_RE = re.compile(r"^[+-]?\d+([.,]\d+)?$")
 
+INTEGER_MIN = -2_147_483_648
+INTEGER_MAX = 2_147_483_647
+
+BIGINT_MIN = -9_223_372_036_854_775_808
+BIGINT_MAX = 9_223_372_036_854_775_807
+
 
 def is_empty(value: str) -> bool:
     return value is None or value.strip() == ""
@@ -66,13 +72,27 @@ def is_datetime(value: str) -> bool:
             continue
     return False
 
+def classify_integer(value: str) -> str:
+    v = value.strip()
+
+    if not INT_RE.match(v):
+        return None
+
+    number = int(v)
+
+    if INTEGER_MIN <= number <= INTEGER_MAX:
+        return "INTEGER"
+
+    if BIGINT_MIN <= number <= BIGINT_MAX:
+        return "BIGINT"
+
+    return "NUMERIC"
+
 
 TYPE_CHECKS = [
     ("BOOLEAN", is_boolean),
     ("TIMESTAMP", is_datetime),
     ("DATE", is_date),
-    ("INTEGER", is_integer),
-    ("NUMERIC", is_float),
 ]
 
 TYPE_RANK = ["BOOLEAN", "INTEGER", "NUMERIC", "DATE", "TIMESTAMP", "TEXT"]
@@ -82,9 +102,17 @@ TYPE_RANK = ["BOOLEAN", "INTEGER", "NUMERIC", "DATE", "TIMESTAMP", "TEXT"]
 def classify_value(value: str) -> str:
     if is_empty(value):
         return None
+
     for type_name, check_fn in TYPE_CHECKS:
         if check_fn(value):
             return type_name
+
+    if is_integer(value):
+        return classify_integer(value)
+
+    if is_float(value):
+        return "NUMERIC"
+
     return "TEXT"
 
 
