@@ -1,5 +1,5 @@
 Para gerar o schema:
-python question2/q2_schema_generator.py ./data --out question2/schema/q2_schema.sql
+python question2/q2_schema_generator.py ./data --out question2/q2_schema.sql
 
 Para rodar o schema no docker (powershell):
-Get-Content "C:\lh-challenge-questions\question2\schema\q2_schema.sql" -Raw | docker exec -i postgres-schema-test psql -U postgres -d csv_schema_test
+Get-Content "C:\lh-challenge-questions\question2\q2_schema.sql" -Raw | docker exec -i postgres-schema-test psql -U postgres -d csv_schema_test

@@ -324,6 +324,29 @@ def analyze_csv(filepath: str, sample_size: int = 0):
         return columns, col_types, col_nullable, col_maxlen
 
 
+# gera os comandos que ditam os relacionamentos entre tabelas
+def generate_foreign_keys() -> str:
+    statements = []
+
+    for table_name, foreign_keys in FOREIGN_KEYS.items():
+        for column, ref_table, ref_column in foreign_keys:
+
+            constraint_name = (
+                f"fk_{table_name}_{column}"
+            )
+
+            statement = (
+                f'ALTER TABLE "{table_name}" '
+                f'ADD CONSTRAINT "{constraint_name}" '
+                f'FOREIGN KEY ("{column}") '
+                f'REFERENCES "{ref_table}" ("{ref_column}");'
+            )
+
+            statements.append(statement)
+
+    return "\n\n".join(statements)
+
+
 # SQL AND SCHEMA FILE GENERATION --------------------------------------------
 
 # infere o tipo final para valores de texto
@@ -385,8 +408,15 @@ def generate_schema(input_dir: str, output_file: str, sample_size: int = 0):
         ddl = generate_create_table(table_name, columns, col_types, col_nullable, col_maxlen)
         statements.append(ddl)
 
+    schema_sql = "\n\n".join(statements)
+    foreign_keys_sql = generate_foreign_keys()
+
     with open(output_file, "w", encoding="utf-8") as f:
-        f.write("\n\n".join(statements))
+        f.write(schema_sql)
+        f.write("\n\n")
+
+        f.write("-- FOREIGN KEYS --------------------------------------------------\n\n")
+        f.write(foreign_keys_sql)
         f.write("\n")
 
     print(f"\n--- Arquivo gerado com sucesso: {os.path.abspath(output_file)}")
