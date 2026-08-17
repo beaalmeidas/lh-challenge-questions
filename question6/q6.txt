@@ -1,0 +1,22 @@
+Questão 6
+1-)
+O baseline não é adequado, por que não apresentou um bom desempenho para esse produto.
+No 1o trimestre de 2026, a média móvel dos últimos 3 meses apresentou um MAE de 10,67 unidades, ou seja, as previsões erraram, em média, cerca de 11 unidades por mês. Até utilizando outras quantidades de meses passados (6 e 12 meses), o MAE continuou nessa faixa.
+Considerando que as vendas reais foram de 26, 24 e 10 unidades nos meses avaliados, o erro é relativamente alto em relação ao volume vendido.
+
+Questão 6.2
+41 unidades.
+
+Questão 6.3
+1-)
+O baseline foi construído utilizando a média móvel dos últimos 3 meses de vendas do produto. Os dados de products, product_variants, order_items e orders foram relacionados para identificar as unidades vendidas do produto. Aí as vendas foram agregadas mensalmente pela coluna quantity. Pra cada mês do 1o trimestre de 2026, a previsão foi calculada como a média das unidades vendidas nos três meses anteriores.
+
+2-)
+O data leakage foi evitado garantindo que, para cada previsão, fossem utilizados somente dados disponíveis antes do mês que estava sendo previsto, separando-se corretamente os dados de treinamento e teste.
+
+3-)
+Uma limitação desse método de avaliação de demanda futura é que ele não leva em conta questões 
+que vão além dos dados presentes nas colunas. De um ano para outro a economia muda e a chance das
+pessoas comprarem um certo produto muda junto com isso.
+Além disso, usar os 3 últimos meses também não leva em consideração o período do ano, dado que
+certos itens tendem a ser comprados mais em certas épocas ou estações.
