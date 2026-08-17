@@ -1,0 +1,7 @@
+1-)
+Porque a tabela de vendas contém somente os dias em que houve algum registro de venda. Se um dia a loja ficou aberta, mas não realizou nenhuma venda, esse dia não estará presente na tabela orders, o que faria com que dias com 0 vendas fossem ignorados no cálculo da média de vendas por dia da semana. Isso inflaria artificialmente a estatística dos dias.
+Ao agrupar diretamente `orders` por dia da semana, esses dias são ignorados no cálculo da média. Isso pode fazer com que determinados dias da semana pareçam ter vendas maiores do que realmente têm.
+
+2-)
+Se os dias sem venda fossem ignorados, a média ficaria falsamente inflada, pois seriam calculados só os dias que tiveram vendas, e não teria dias de 0 vendas pra abaixar a média.
+Ao combinar o calendário com as datas na tabela de pedidos, é possível ver quando um dia não teve vendas (não aparece em orders). Então considera-se as vendas nesses dias = 0, e aí tem-se uma descrição correta dos dias que a loja esteve aberta.

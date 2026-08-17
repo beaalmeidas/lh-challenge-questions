@@ -1,0 +1,15 @@
+1-) Seguindo o relacionamento entre as tabelas através de vários joins.
+- orders identifica quem fez a compra (através de customer_id),
+- order_items identifica quais produtos foram comprados num dado pedido (relacionado através de order_id);
+- product_variants relaciona a variação que foi comprada ao produto em si (por product_id);
+- o dataset products contém o category_id;
+- depois só contar a quantidade de category_id únicos pra saber qual a que mais vendeu.
+- pra descobrir qual categoria teve a maior quantidade de itens comprados, utilizamos usa sum(quantity) agrupado por category_id.
+
+2-) 
+- A partir da lógica da questão passada, conta a quantidade de categorias que o cliente comprou (usando count distinct em category_id, por que pode contar uma mesma categoria várias vezes se ele tiver comprado dela várias vezes).
+- Pega só os que compraram em 13 categorias ou mais.
+
+3-) 
+- Segue-se o que tava sendo feito na questão passada e ordena os clientes obtidos descrecentemente pelo ticket médio (que foi calculado em SUM(total) / COUNT(id) AS average_ticket) e aí pega os 10 primeiros.
+- Em caso de empate no ticket médio, foi usado o id do cliente em ordem crescente pro desempate.
